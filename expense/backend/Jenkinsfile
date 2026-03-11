@@ -1,7 +1,6 @@
 pipeline {
 agent { label 'agent' }
 
-```
 environment {
     AWS_REGION = 'us-east-1'
     ECR_REPO = 'expense/dev/backend'
@@ -61,6 +60,5 @@ post {
         echo "Pipeline failed. Check logs."
     }
 }
-```
 
 }
