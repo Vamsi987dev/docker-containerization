@@ -1,0 +1,10 @@
+configMap:
+  db_host: expense-dev.crawuk2iyd55.us-east-1.rds.amazonaws.com
+
+
+deployment:
+  imageURL: 222634367824.dkr.ecr.us-east-1.amazonaws.com/expense/dev/backend
+  tag: "1"
+  
+
+  
