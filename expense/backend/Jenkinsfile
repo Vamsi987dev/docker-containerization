@@ -1,11 +1,17 @@
 pipeline {
 agent { label 'agent' }
 
+options{
+    timeout(time: 30, unit: 'MINUTES')
+    disableConcurrentBuilds()
+    //retry(1)
+}
+
 environment {
     AWS_REGION = 'us-east-1'
-    ECR_REPO = 'expense/dev/backend'
     ACCOUNT_ID = '222634367824'
     IMAGE_TAG = "${BUILD_NUMBER}"
+    ECR_REPO = 'expense/dev/backend'
 }
 
 stages {
@@ -19,7 +25,7 @@ stages {
     stage('Build Docker Image') {
         steps {
             sh '''
-            docker build -t $ECR_REPO:$IMAGE_TAG ./expense/backend
+            docker build -t $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG .
             '''
         }
     }
@@ -29,14 +35,6 @@ stages {
             sh '''
             aws ecr get-login-password --region $AWS_REGION | \
             docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-            '''
-        }
-    }
-
-    stage('Tag Docker Image') {
-        steps {
-            sh '''
-            docker tag $ECR_REPO:$IMAGE_TAG $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
             '''
         }
     }
