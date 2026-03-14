@@ -1,0 +1,4 @@
+deployment:
+  replicas: 2
+  imageURL: 
+  tag: "1"

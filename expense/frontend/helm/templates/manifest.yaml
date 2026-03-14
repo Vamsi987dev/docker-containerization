@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: expense
+  labels:
+    name: frontend
+    tier: web
+    project: expense  
+spec:
+  replicas: "{{ .Values.deployment.replicas }}"
+  selector:
+    matchLabels:
+      name: frontend
+      tier: web
+      project: expense
+  template:
+    metadata:
+      labels:
+        name: frontend
+        tier: web
+        project: expense 
+    spec:
+      containers:
+      - name: frontend-expense
+        image: "{{ .Values.deployment.imageURL }}:{{ .Values.deployment.tag }}" 
+        resources:  
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: expense
+  labels:  
+    name: frontend
+    tier: web
+    project: expense
+spec:
+  type: LoadBalancer
+  selector:
+      name: frontend
+      tier: web
+      project: expense
+  ports:
+    - name: frontend-ports
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: expense
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 15
+
+
+    
+      
+
