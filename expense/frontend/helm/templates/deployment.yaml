@@ -32,42 +32,10 @@ spec:
             cpu: 100m
             memory: 128Mi
     
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-  namespace: expense
-  labels:  
-    name: frontend
-    tier: web
-    project: expense
-spec:
-  type: LoadBalancer
-  selector:
-      name: frontend
-      tier: web
-      project: expense
-  ports:
-    - name: frontend-ports
-      protocol: TCP
-      port: 80
-      targetPort: 80
 
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: frontend
-  namespace: expense
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: frontend
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 15
+
+
+
 
 
     

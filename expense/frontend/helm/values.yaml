@@ -2,3 +2,7 @@ deployment:
   replicas: 2
   imageURL: 
   tag: "1"
+hpa:
+  cpuUtilization: 15
+tgb:
+  arn: 

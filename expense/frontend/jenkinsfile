@@ -46,26 +46,26 @@ stages {
             '''
         }
     }
-    stage('Authenticate to EKS') {
-        steps {
-            sh '''
-            aws eks update-kubeconfig \
-            --region $AWS_REGION \
-            --name expense-dev
-            '''
-        }
-    }
-    stage('Deploy to Kubernetes') {
-        steps {
-            sh '''
-            helm upgrade --install frontend ./expense/frontend/helm \
-            --namespace expense \
-            --create-namespace \
-            --set deployment.tag=$IMAGE_TAG \
-            --wait --timeout 5m
-            '''
-        }
-    }
+    // stage('Authenticate to EKS') {
+    //     steps {
+    //         sh '''
+    //         aws eks update-kubeconfig \
+    //         --region $AWS_REGION \
+    //         --name expense-dev
+    //         '''
+    //     }
+    // }
+    // stage('Deploy to Kubernetes') {
+    //     steps {
+    //         sh '''
+    //         helm upgrade --install frontend ./expense/frontend/helm \
+    //         --namespace expense \
+    //         --create-namespace \
+    //         --set deployment.tag=$IMAGE_TAG \
+    //         --wait --timeout 5m
+    //         '''
+    //     }
+    // }
 
 }
 
